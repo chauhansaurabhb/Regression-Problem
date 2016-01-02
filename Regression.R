@@ -1,0 +1,20 @@
+calorie=c(503,402,529.97,501.72,540.58,474.25,550.34,530.34,536.28,547.63,542.79,551.76,535.1,722,239.,318,467,525,470,391.3,470,370.4,265,210,218,503,290,530,512,591,502,525,486,506,480,619,449,441,487)
+fat=c(23.3,14.4,29.55,22.58,32.36,31.55,34.09,30.33,31.77,33.55,32.45,34.63,31.07,80,3.2,23,21.7,33,22,8.7,16.5,8,1.6,13,10.92,23,10,30,28.62,43.85,28.62,26,24.5,27.4,21.5,48,12,11.5,25)
+fit=nls(fat~(theta0+theta1*calorie+theta2*calorie^2+theta3*calorie^3),
+         start=list(theta0=9,theta1=1.5,theta2=8.5,theta3=15),trace=T)
+summary(fit)
+b0=3.333e+01
+b1=-1.713e-01 
+b2=2.713e-04
+b3=7.680e-08
+method=function(calorie)
+{
+  expfat=(b0)+(b1*calorie)+(b2*calorie^2)+(b3*calorie^3)  
+  return (expfat)  
+}
+expfat=method(calorie)
+expfat
+plot(calorie,fat,xlab="Calorie",ylab="Fat")
+lines(calorie,expfat,col="red",type="p")
+mse=(sum(expfat-fat)^2)/39
+mse
